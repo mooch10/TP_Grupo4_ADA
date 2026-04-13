@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Guia de Ejecucion Examen Cliente</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; line-height: 1.45; margin: 36px; color: #111; }
+    h1, h2, h3 { color: #0b3d91; }
+    code, pre { font-family: Consolas, monospace; background: #f4f4f4; }
+    pre { padding: 10px; border-radius: 6px; overflow: auto; }
+    li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Guia Completa de Ejecucion (Desde Cero)</h1>
+  <p>Esta guia esta pensada para una persona que recien clona el proyecto y necesita ejecutar correctamente el ecosistema para aprobar el examen de <code>cliente-service</code>.</p>
+
+  <h2>1. Requisitos previos</h2>
+  <ol>
+    <li>Java 21 o superior (recomendado 21 LTS).</li>
+    <li>Maven 3.9 o superior.</li>
+    <li>Git.</li>
+    <li>Visual Studio Code (opcional, recomendado).</li>
+    <li>Java Extension Pack en VS Code (opcional, recomendado).</li>
+  </ol>
+  <pre><code>java -version
+mvn -version
+git --version</code></pre>
+
+  <h2>2. Clonar y abrir el proyecto</h2>
+  <pre><code>git clone &lt;URL_DEL_REPOSITORIO&gt;
+cd arquitecturaaplicaciones_microservicios</code></pre>
+  <p>Abrir la carpeta raiz en VS Code.</p>
+
+  <h2>3. Recargar proyectos Java/Maven</h2>
+  <ol>
+    <li>Ejecutar <code>Maven: Reload All Projects</code>.</li>
+    <li>Si no aparecen modulos: <code>Java: Clean Java Language Server Workspace</code> y reiniciar VS Code.</li>
+  </ol>
+
+  <h2>4. Compilar una vez todo el proyecto</h2>
+  <pre><code>mvn clean install -DskipTests</code></pre>
+  <p>Si aparece <code>no POM in this directory</code>, no estas en la carpeta correcta.</p>
+
+  <h2>5. Orden de arranque recomendado</h2>
+  <p>Abrir 5 terminales separadas y ejecutar en este orden:</p>
+  <h3>Terminal 1 - Config Server</h3>
+  <pre><code>cd config-server
+mvn spring-boot:run</code></pre>
+  <h3>Terminal 2 - Eureka Server</h3>
+  <pre><code>cd eureka-server
+mvn spring-boot:run</code></pre>
+  <h3>Terminal 3 - Auth Service</h3>
+  <pre><code>cd auth-service
+mvn spring-boot:run</code></pre>
+  <h3>Terminal 4 - Cliente Service</h3>
+  <pre><code>cd cliente-service
+mvn spring-boot:run</code></pre>
+  <h3>Terminal 5 - API Gateway</h3>
+  <pre><code>cd api-gateway
+mvn spring-boot:run</code></pre>
+
+  <h2>6. Verificaciones minimas de salud</h2>
+  <ol>
+    <li>Eureka UI: http://localhost:8761</li>
+    <li>Deben verse AUTH-SERVICE y CLIENTE-SERVICE en estado UP.</li>
+    <li>Gateway health: http://localhost:8080/actuator/health</li>
+  </ol>
+
+  <h2>7. Obtener JWT para pruebas</h2>
+  <pre><code>$body = @{ username="admin"; password="admin123" } | ConvertTo-Json
+$login = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/auth/login" -ContentType "application/json" -Body $body
+$token = $login.token
+$token</code></pre>
+
+  <h2>8. Probar CRUD de cliente via gateway</h2>
+  <pre><code># Crear
+$new = @{ nombre="Juan Perez"; telefono="+54 11 1234-5678" } | ConvertTo-Json
+$c = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/api/clientes" -Headers @{ Authorization="Bearer $token" } -ContentType "application/json" -Body $new
+$id = $c.id
+
+# Listar
+Invoke-RestMethod -Method Get -Uri "http://localhost:8080/api/clientes" -Headers @{ Authorization="Bearer $token" }
+
+# Obtener por ID
+Invoke-RestMethod -Method Get -Uri "http://localhost:8080/api/clientes/$id" -Headers @{ Authorization="Bearer $token" }
+
+# Actualizar
+$u = @{ nombre="Juan Editado"; telefono="+54 11 7000-0000" } | ConvertTo-Json
+Invoke-RestMethod -Method Put -Uri "http://localhost:8080/api/clientes/$id" -Headers @{ Authorization="Bearer $token" } -ContentType "application/json" -Body $u
+
+# Eliminar
+Invoke-WebRequest -Method Delete -Uri "http://localhost:8080/api/clientes/$id" -Headers @{ Authorization="Bearer $token" }</code></pre>
+
+  <h2>9. Ejecutar tests oficiales</h2>
+  <pre><code>cd exam-cliente-integration-tests
+$env:EXAM_STUDENT_ID = "TU_LEGAJO"
+$env:GATEWAY_BASE_URL = "http://localhost:8080"
+mvn verify</code></pre>
+  <p>Salida esperada: <code>Tests run: 9, Failures: 0, Errors: 0</code>, <code>BUILD SUCCESS</code>, <code>Resultado: APROBADO</code>.</p>
+
+  <h2>10. Problemas comunes</h2>
+  <ul>
+    <li><b>mvn is not recognized</b>: Maven no esta en PATH.</li>
+    <li><b>JAVA_HOME is not defined correctly</b>: definir JAVA_HOME y agregar bin al PATH de la sesion.</li>
+    <li><b>no POM in this directory</b>: ejecutar desde carpeta correcta.</li>
+    <li><b>404 /api/clientes</b>: reiniciar api-gateway y validar cliente-service en Eureka.</li>
+  </ul>
+
+  <h2>11. Recomendaciones finales</h2>
+  <ol>
+    <li>Mantener arriba config-server, eureka-server, auth-service, cliente-service y api-gateway durante <code>mvn verify</code>.</li>
+    <li>Guardar evidencia de <code>BUILD SUCCESS</code> y <code>Resultado: APROBADO</code>.</li>
+    <li>Conservar reporte: <code>exam-cliente-integration-tests/target/exam-report/resultado-examen.json</code>.</li>
+  </ol>
+</body>
+</html>
