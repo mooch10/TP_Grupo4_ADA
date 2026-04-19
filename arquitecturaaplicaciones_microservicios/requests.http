@@ -8,6 +8,7 @@
 ### ===================================================
 
 ### Login como admin → copiá el token en @token
+### @name loginAdmin
 POST {{gatewayUrl}}/auth/login
 Content-Type: application/json
 
@@ -33,7 +34,7 @@ Content-Type: application/json
 ### INVENTORY SERVICE — vía API Gateway (con JWT)
 ### ===================================================
 
-@token = Bearer <pegá aquí el token>
+@token = Bearer {{loginAdmin.response.body.$.token}}
 
 ### Obtener todos los productos
 GET {{gatewayUrl}}/api/inventory/products
@@ -57,6 +58,75 @@ Authorization: {{token}}
   "quantity": 10,
   "price": 99.99
 }
+
+###
+
+### ===================================================
+### CLIENTE SERVICE — vía API Gateway (con JWT)
+### ===================================================
+
+### Crear cliente
+POST {{gatewayUrl}}/api/clientes
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "nombre": "Cliente Demo",
+  "telefono": "+54 11 1234-5678"
+}
+
+###
+
+### Listar clientes
+GET {{gatewayUrl}}/api/clientes
+Authorization: {{token}}
+
+###
+
+### Obtener cliente por ID (cambiar 1 por un ID real)
+GET {{gatewayUrl}}/api/clientes/1
+Authorization: {{token}}
+
+###
+
+### Actualizar cliente por ID
+PUT {{gatewayUrl}}/api/clientes/1
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "nombre": "Cliente Demo Editado",
+  "telefono": "+54 11 7000-0000"
+}
+
+###
+
+### Eliminar cliente por ID
+DELETE {{gatewayUrl}}/api/clientes/1
+Authorization: {{token}}
+
+###
+
+### Crear cliente inválido (esperado: 400)
+POST {{gatewayUrl}}/api/clientes
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "nombre": "",
+  "telefono": "x"
+}
+
+###
+
+### Obtener cliente inexistente (esperado: 404)
+GET {{gatewayUrl}}/api/clientes/999999999
+Authorization: {{token}}
+
+###
+
+### Sin JWT en endpoint protegido (esperado: 401)
+GET {{gatewayUrl}}/api/clientes
 
 ###
 
@@ -105,6 +175,21 @@ GET http://localhost:8888/actuator/health
 
 ### Inventory Service
 GET {{inventoryUrl}}/actuator/health
+
+###
+
+### Cliente Service
+GET http://localhost:8086/actuator/health
+
+###
+
+### API Gateway
+GET {{gatewayUrl}}/actuator/health
+
+###
+
+### Auth Service
+GET {{authUrl}}/actuator/health
 
 ###
 

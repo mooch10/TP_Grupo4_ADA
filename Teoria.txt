@@ -1,0 +1,138 @@
+1. Según la definición de Bass et al., ¿qué es la arquitectura de software?
+
+El conjunto de estructuras necesarias para razonar sobre el sistema
+
+2. Según Grady Booch, ¿cómo se mide la significación de las decisiones que diferencian 
+la Arquitectura del Diseño Detallado?
+
+Por el costo del cambio
+
+3. Según Bass, ¿cuál de las siguientes NO es una de las tres responsabilidades principales 
+del arquitecto de software?
+
+Escribir y automatizar todos los tests unitarios del sistema
+
+4. ¿Cuál es una de las tres razones fundamentales por las que es importante definir la 
+Arquitectura de Software?
+
+Representa las decisiones tempranas del sistema que resultan ser las más difíciles de cambiar
+
+5. En el ecosistema de microservicios, ¿por qué el Config Server debe ser el primer servicio 
+en arrancar?
+
+Porque todos los demás servicios dependen de él para obtener su configuración
+
+6. ¿Qué función principal cumple Eureka Server dentro de la arquitectura de microservicios?
+
+Actúa como un registro de servicios (Service Discovery)
+
+7. ¿Cuál es la diferencia fundamental entre los requerimientos funcionales y los no funcionales 
+(atributos de calidad)?
+
+Los funcionales definen "lo que el sistema hace" y los no funcionales "cómo el sistema se comporta"
+
+8. ¿Por qué no es válido definir un atributo de calidad simplemente afirmando que "el sistema debe 
+ser rápido"?
+
+Porque los atributos de calidad deben ser medibles para poder evaluar la arquitectura
+
+9. En un escenario de atributo de calidad según Bass, ¿cómo se denomina a la parte que responde a 
+la pregunta "¿Qué es lo que sucede?"?
+
+Estímulo
+
+10. En un escenario de atributo de calidad, ¿a qué se refiere el "Entorno"?
+
+A las condiciones en las que ocurre el evento, como operación normal o sobrecarga
+
+11. ¿En qué consiste el enfoque conocido como Spec-Driven Development (SDD)?
+
+En definir y acordar la especificación técnica como única fuente de verdad antes de escribir el código
+
+12. ¿Cómo se diferencia la "Latencia" del "Throughput" en el diseño de software?
+
+La latencia mide el tiempo de viaje de una única unidad de datos y el throughput cuántas transacciones 
+se procesan en un tiempo dado
+
+13. ¿Qué característica describe mejor a la herramienta k6?
+
+Es una herramienta de código abierto para realizar pruebas de carga y rendimiento basada en scripts
+
+14. ¿Qué característica principal define a un estilo arquitectónico de tipo "Monolito"?
+
+Representa una unidad funcional única con un despliegue de "todo o nada"
+
+15. En la evolución histórica de las arquitecturas hacia SOA, ¿qué componente es clave para lograr 
+la comunicación entre servicios independientes?
+
+Un bus de servicios empresariales (ESB)
+
+16. ¿Cuál es uno de los principales costos (trade-offs) al adoptar una Arquitectura de Microservicios?
+
+El aumento de la complejidad operativa, la latencia de red y el manejo de la consistencia eventual
+
+17. ¿Qué comportamiento describe correctamente al cliente HTTP RestTemplate?
+
+Es un cliente síncrono y bloqueante, donde el hilo de ejecución espera hasta recibir la respuesta
+
+18. ¿Qué ventaja principal ofrece la comunicación asincrónica utilizando un Message Broker frente 
+a una llamada HTTP directa?
+
+Brinda desacoplamiento temporal, resiliencia y tolerancia a caídas del servicio destino
+
+19. ¿Qué función cumple la anotación @LoadBalanced sobre un bean de RestTemplate?
+
+Activa el balanceo de carga del lado del cliente consultando a Eureka por las instancias activas
+
+20. Según la idea central de Bass sobre documentación, ¿por qué no existe un único diagrama suficiente 
+para explicar una arquitectura?
+
+Porque la arquitectura debe documentarse mediante múltiples vistas adaptadas a los intereses de 
+distintos stakeholders
+
+21. En el C4 Model, ¿qué información principal muestra el diagrama de Nivel 1 (Contexto)?
+
+El sistema completo interactuando como una caja negra con los usuarios y los sistemas externos
+
+22. ¿Qué pregunta clave intenta responder el Nivel 2 (Contenedores) del Modelo C4?
+
+¿Cómo se divide internamente el sistema en microservicios, APIs y bases de datos?
+
+23. Dentro de los conceptos fundamentales de Docker, ¿cómo se define una "imagen"?
+
+Como una plantilla inmutable que empaqueta el código, el runtime, la configuración y las dependencias
+
+24. ¿Para qué propósito principal se utiliza la herramienta Docker Compose?
+
+Para la orquestación local, permitiendo definir y levantar múltiples contenedores y redes con un
+solo comando
+
+25. ¿Cuál es la principal característica que diferencia a WebClient de RestTemplate?
+
+WebClient es un cliente HTTP reactivo y no bloqueante que libera el hilo mientras espera respuesta
+
+26. En la programación reactiva que utiliza Spring WebFlux, ¿qué representa el tipo de dato Mono<T>?
+
+Un resultado que contendrá como máximo 0 o 1 elemento
+
+27. ¿Qué problema arquitectónico del cliente, conocido como "chatteriness", ayuda a mitigar un API
+Gateway?
+
+La necesidad de que el frontend realice múltiples llamadas HTTP a distintos microservicios para armar
+una pantalla
+
+28. ¿Qué principio arquitectónico, mencionado por Bass, se aplica al colocar un API Gateway entre
+clientes y microservicios?
+
+El uso de una capa de indirección para resolver problemas de acoplamiento y ruteo
+
+29. ¿Qué rol cumple la validación del Token JWT en el contexto del API Gateway?
+
+Centraliza la seguridad para proteger los servicios internos sin necesidad de implementar validaciones
+en cada uno
+
+30. En la gestión de adquisiciones y selección de tecnología vista en clase, ¿por qué se elige Spring 
+Cloud Gateway por sobre Netflix Zuul?
+
+Porque Zuul es una tecnología sin soporte (deprecated), mientras que Spring Cloud Gateway es el 
+estándar actual compatible con Java 21
