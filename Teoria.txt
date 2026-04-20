@@ -1,23 +1,32 @@
+Examen general: (pegar ese codigo en la terminal para ejecutar la prueba)
+
+cd "C:\Programas\Arquitectura_de_Aplicaciones\arquitecturaaplicaciones_microservicios\exam-cliente-integration-tests"
+$env:EXAM_STUDENT_ID="1168976"
+$env:GATEWAY_BASE_URL="http://localhost:8080"
+mvn verify
+
+
+
 1. Según la definición de Bass et al., ¿qué es la arquitectura de software?
 
 El conjunto de estructuras necesarias para razonar sobre el sistema
 
-2. Según Grady Booch, ¿cómo se mide la significación de las decisiones que diferencian 
+2. Según Grady Booch, ¿cómo se mide la significación de las decisiones que diferencian
 la Arquitectura del Diseño Detallado?
 
 Por el costo del cambio
 
-3. Según Bass, ¿cuál de las siguientes NO es una de las tres responsabilidades principales 
+3. Según Bass, ¿cuál de las siguientes NO es una de las tres responsabilidades principales
 del arquitecto de software?
 
 Escribir y automatizar todos los tests unitarios del sistema
 
-4. ¿Cuál es una de las tres razones fundamentales por las que es importante definir la 
+4. ¿Cuál es una de las tres razones fundamentales por las que es importante definir la
 Arquitectura de Software?
 
 Representa las decisiones tempranas del sistema que resultan ser las más difíciles de cambiar
 
-5. En el ecosistema de microservicios, ¿por qué el Config Server debe ser el primer servicio 
+5. En el ecosistema de microservicios, ¿por qué el Config Server debe ser el primer servicio
 en arrancar?
 
 Porque todos los demás servicios dependen de él para obtener su configuración
